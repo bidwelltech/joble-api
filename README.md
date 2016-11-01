@@ -4,6 +4,7 @@ Job search organization and coordination.
 
 1. [Get Started](#get-started)
   1. [Dependencies](#dependencies)
+
 <!--
   1. [Install](#install)
   1. [Run Code Locally](#run-code-locally)
