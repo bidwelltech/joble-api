@@ -31,5 +31,9 @@
   "Role": {
     "dataSource": "db",
     "public": false
+  },
+  "Lead": {
+    "dataSource": "api-db",
+    "public": true
   }
 }

@@ -2,5 +2,15 @@
   "db": {
     "name": "db",
     "connector": "memory"
+  },
+  "api-db": {
+    "host": "localhost",
+    "port": 5432,
+    "url": "postgres://joble:asdf@localhost:5432/jobleapi",
+    "database": "jobleapi",
+    "password": "asdf",
+    "name": "api-db",
+    "user": "joble",
+    "connector": "postgresql"
   }
 }
