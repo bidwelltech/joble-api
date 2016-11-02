@@ -1,15 +1,25 @@
 {
-  "name": "Lead",
-  "plural": "Leads",
+  "name": "Job",
+  "plural": "Jobs",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "name": {
+    "title": {
       "type": "string",
       "required": true
+    },
+    "company": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "date",
+      "defaultFn": "now"
     }
   },
   "validations": [],

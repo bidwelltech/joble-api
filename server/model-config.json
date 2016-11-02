@@ -32,7 +32,7 @@
     "dataSource": "db",
     "public": false
   },
-  "Lead": {
+  "Job": {
     "dataSource": "api-db",
     "public": true
   }
