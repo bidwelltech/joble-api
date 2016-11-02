@@ -20,6 +20,9 @@
     },
     "endDate": {
       "type": "date"
+    },
+    "notes": {
+      "type": "string"
     }
   },
   "validations": [],

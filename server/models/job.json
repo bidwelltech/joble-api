@@ -24,6 +24,9 @@
     "status": {
       "type": "string",
       "required": true
+    },
+    "notes": {
+      "type": "string"
     }
   },
   "validations": [],

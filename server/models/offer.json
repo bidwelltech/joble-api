@@ -7,7 +7,7 @@
     "validateUpsert": true
   },
   "properties": {
-    "Compensation": {
+    "compensation": {
       "type": "string"
     },
     "expirationDate": {
