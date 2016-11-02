@@ -19,6 +19,10 @@
     },
     "notes": {
       "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],

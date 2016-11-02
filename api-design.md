@@ -15,21 +15,28 @@
 
 Interaction
 - Description
-- End Date (assumed to === Start Date unless otherwise specified)
-- Title (?)
-- Type: communication, interview, other
+- Type: interview, communication, other
 - Start Date
+- End Date
+- Notes
 
 Job
 - Title
 - Status: open, closed
+- Company
+- Source
+- Start Date
+- Notes
 
 Offer
 - Compensation
 - Expiration Date
+- Given Date
+- State: accepted, rejected, undecided
+- Notes
 
 Search
 - Title
-- Start Date (?)
-- End Date (?)
-- Status: active/inactive
+- Description
+- Status: open, closed
+- Notes
