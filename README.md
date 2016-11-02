@@ -24,6 +24,8 @@ These instructions will get you a copy of the project up and running on your loc
 - [nodejs](https://nodejs.org/en/) 6.9.1
 - [LoopBack](http://loopback.io) 3.x
 
+Read our [rationale](RATIONALE.md) to see why we chose to use these dependencies.
+
 <!--
 ### Install
 
