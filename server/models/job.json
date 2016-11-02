@@ -37,6 +37,11 @@
       "type": "hasMany",
       "model": "Interaction",
       "foreignKey": ""
+    },
+    "offers": {
+      "type": "hasMany",
+      "model": "Offer",
+      "foreignKey": ""
     }
   },
   "acls": [],

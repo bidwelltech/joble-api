@@ -22,7 +22,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "job": {
+      "type": "belongsTo",
+      "model": "Job",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }
