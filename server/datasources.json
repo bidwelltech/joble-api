@@ -6,7 +6,7 @@
   "api-db": {
     "host": "localhost",
     "port": 5432,
-    "url": "postgres://joble:asdf@localhost:5432/jobleapi",
+    "url": "",
     "database": "jobleapi",
     "password": "asdf",
     "name": "api-db",
