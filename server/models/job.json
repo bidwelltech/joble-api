@@ -32,6 +32,11 @@
       "type": "belongsTo",
       "model": "Search",
       "foreignKey": ""
+    },
+    "interactions": {
+      "type": "hasMany",
+      "model": "Interaction",
+      "foreignKey": ""
     }
   },
   "acls": [],
