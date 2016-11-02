@@ -43,5 +43,9 @@
   "Interaction": {
     "dataSource": "api-db",
     "public": true
+  },
+  "Offer": {
+    "dataSource": "api-db",
+    "public": true
   }
 }

@@ -1,0 +1,28 @@
+{
+  "name": "Offer",
+  "plural": "Offers",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "Compensation": {
+      "type": "string"
+    },
+    "expirationDate": {
+      "type": "date"
+    },
+    "givenDate": {
+      "type": "date",
+      "required": true
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
