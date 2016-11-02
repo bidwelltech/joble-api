@@ -20,6 +20,10 @@
     "createdAt": {
       "type": "date",
       "defaultFn": "now"
+    },
+    "status": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
