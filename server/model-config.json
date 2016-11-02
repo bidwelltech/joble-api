@@ -35,5 +35,9 @@
   "Job": {
     "dataSource": "api-db",
     "public": true
+  },
+  "Search": {
+    "dataSource": "api-db",
+    "public": true
   }
 }
