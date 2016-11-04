@@ -34,13 +34,10 @@ npm run setup
 ```
 -->
 
-<!--
 ### Run Code Locally
 
-```sh
-npm start
-```
--->
+1. Start postgresql: varies by system (`services start postgres` on ubuntu)
+1. Start server: `npm start`
 
 <!--
 A step by step series of examples that tell you have to get a development env running
