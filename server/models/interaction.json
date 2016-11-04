@@ -31,6 +31,11 @@
       "type": "belongsTo",
       "model": "job",
       "foreignKey": ""
+    },
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": ""
     }
   },
   "acls": [],

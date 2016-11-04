@@ -28,6 +28,11 @@
       "type": "hasMany",
       "model": "job",
       "foreignKey": ""
+    },
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": ""
     }
   },
   "acls": [],

@@ -45,6 +45,11 @@
       "type": "hasMany",
       "model": "offer",
       "foreignKey": ""
+    },
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": ""
     }
   },
   "acls": [],
