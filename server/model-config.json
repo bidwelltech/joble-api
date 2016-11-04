@@ -14,7 +14,7 @@
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "api-db"
   },
   "AccessToken": {
     "dataSource": "db",
