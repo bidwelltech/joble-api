@@ -8,7 +8,28 @@
   },
   "properties": {},
   "validations": [],
-  "relations": {},
+  "relations": {
+    "interactions": {
+      "type": "hasMany",
+      "model": "interaction",
+      "foreignKey": ""
+    },
+    "jobs": {
+      "type": "hasMany",
+      "model": "job",
+      "foreignKey": ""
+    },
+    "offers": {
+      "type": "hasMany",
+      "model": "offer",
+      "foreignKey": ""
+    },
+    "searches": {
+      "type": "hasMany",
+      "model": "search",
+      "foreignKey": ""
+    }
+  },
   "acls": [],
   "methods": {}
 }
