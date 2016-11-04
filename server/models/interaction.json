@@ -1,6 +1,6 @@
 {
-  "name": "Interaction",
-  "plural": "Interactions",
+  "name": "interaction",
+  "plural": "interactions",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -29,7 +29,7 @@
   "relations": {
     "job": {
       "type": "belongsTo",
-      "model": "Job",
+      "model": "job",
       "foreignKey": ""
     }
   },

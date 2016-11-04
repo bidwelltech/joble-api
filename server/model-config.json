@@ -14,7 +14,8 @@
     ]
   },
   "User": {
-    "dataSource": "api-db"
+    "dataSource": "db",
+    "public": false
   },
   "AccessToken": {
     "dataSource": "db",
@@ -32,19 +33,23 @@
     "dataSource": "db",
     "public": false
   },
-  "Job": {
+  "job": {
     "dataSource": "api-db",
     "public": true
   },
-  "Search": {
+  "search": {
     "dataSource": "api-db",
     "public": true
   },
-  "Interaction": {
+  "interaction": {
     "dataSource": "api-db",
     "public": true
   },
-  "Offer": {
+  "offer": {
+    "dataSource": "api-db",
+    "public": true
+  },
+  "user": {
     "dataSource": "api-db",
     "public": true
   }

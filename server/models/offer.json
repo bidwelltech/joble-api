@@ -1,6 +1,6 @@
 {
-  "name": "Offer",
-  "plural": "Offers",
+  "name": "offer",
+  "plural": "offers",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -29,7 +29,7 @@
   "relations": {
     "job": {
       "type": "belongsTo",
-      "model": "Job",
+      "model": "job",
       "foreignKey": ""
     }
   },

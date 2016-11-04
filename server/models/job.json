@@ -1,6 +1,6 @@
 {
-  "name": "Job",
-  "plural": "Jobs",
+  "name": "job",
+  "plural": "jobs",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -33,17 +33,17 @@
   "relations": {
     "search": {
       "type": "belongsTo",
-      "model": "Search",
+      "model": "search",
       "foreignKey": ""
     },
     "interactions": {
       "type": "hasMany",
-      "model": "Interaction",
+      "model": "interaction",
       "foreignKey": ""
     },
     "offers": {
       "type": "hasMany",
-      "model": "Offer",
+      "model": "offer",
       "foreignKey": ""
     }
   },
