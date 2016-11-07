@@ -24,14 +24,28 @@
     "supertest": "^2.0.1"
   },
   "devDependencies": {
-    "eslint": "^2.13.1",
-    "eslint-config-loopback": "^4.0.0",
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.6.0",
     "nodemon": "^1.11.0",
     "nsp": "^2.1.0"
   },
   "repository": {
     "type": "",
     "url": ""
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "env": {
+      "mocha": true
+    },
+    "plugins": [
+      "react",
+      "jsx-a11y",
+      "import"
+    ]
   },
   "license": "UNLICENSED",
   "description": "joble-api"
