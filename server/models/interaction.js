@@ -1,8 +1,7 @@
-'use strict';
 const apiConfig = require('../../api-config');
 const disableAllMethodsWithExceptions = require('../helpers').disableAllMethodsWithExceptions;
 
-module.exports = function(Interaction) {
+module.exports = (Interaction) => {
   // Validation
   Interaction.validatesPresenceOf(['type', 'startDate']);
   Interaction.validatesInclusionOf('type', {

@@ -1,13 +1,13 @@
-'use strict';
-
-module.exports = function (app) {
+module.exports = (app) => {
   const Role = app.models.Role;
-
-  console.log('creating roles: admin');
 
   // Create the `admin` role and a default administrator
   Role.create({
-    name: 'admin'
+    name: 'admin',
+  }, () => {
+    if (process.env.NODE_ENV !== 'test') {
+      console.log('Created admin role');
+    }
   });
 };
 

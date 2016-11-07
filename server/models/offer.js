@@ -1,8 +1,7 @@
-'use strict';
 const apiConfig = require('../../api-config');
 const disableAllMethodsWithExceptions = require('../helpers').disableAllMethodsWithExceptions;
 
-module.exports = function(Offer) {
+module.exports = (Offer) => {
   // Validation
   Offer.validatesPresenceOf(['givenDate', 'status']);
   Offer.validatesInclusionOf('status', {
