@@ -13,7 +13,6 @@ const disableAllMethodsWithExceptions = function disableAllMethods(model, method
     {
       Object.keys(model.definition.settings.relations).forEach(function(relation)
       {
-        console.log(modelName, relation);
         relationMethods.push({ name: 'prototype.__findById__' + relation });
         relationMethods.push({ name: 'prototype.__destroyById__' + relation });
         relationMethods.push({ name: 'prototype.__updateById__' + relation });

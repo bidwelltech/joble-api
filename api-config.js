@@ -218,19 +218,24 @@ module.exports = {
   user: {
     enabledMethods: [
       'create',
-      'patchOrCreate',
-      'replaceOrCreate',
+      // 'patchOrCreate',
+      // 'replaceOrCreate',
       'upsertWithWhere',
       'exists',
       'findById',
       'replaceById',
-      'find',
+      // 'find',
       'findOne',
       'updateAll',
       'deleteById',
       'count',
       'patchAttributes',
-      'createChangeStream',
+      // 'createChangeStream',
+
+      'login',
+      'logout',
+      'confirm',
+      'resetPassword',
 
       'prototype.patchAttributes',
 
