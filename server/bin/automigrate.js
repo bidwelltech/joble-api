@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const app = require(path.resolve(__dirname, '../server'))
+const app = require('../server');
 
 const psql = app.datasources.apiDb;
 
