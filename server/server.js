@@ -1,7 +1,12 @@
 const loopback = require('loopback');
 const boot = require('loopback-boot');
+const morgan = require('morgan');
 
 const app = module.exports = loopback();
+
+if (process.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
 
 app.start = () => (
   // start the web server
