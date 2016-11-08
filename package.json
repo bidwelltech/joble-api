@@ -12,6 +12,7 @@
     "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
+    "bluebird": "^3.4.6",
     "chai": "^3.5.0",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
@@ -21,9 +22,11 @@
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^2.4.0",
     "loopback-connector-postgresql": "^2.7.0",
+    "morgan": "^1.7.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^1.0.1",
-    "supertest": "^2.0.1"
+    "supertest": "^2.0.1",
+    "supertest-as-promised": "^4.0.2"
   },
   "devDependencies": {
     "eslint": "^3.9.1",
