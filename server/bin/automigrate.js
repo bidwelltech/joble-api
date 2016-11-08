@@ -16,5 +16,5 @@ Object.keys(modelConfig)
   ))
   .forEach((key) => {
     psql.automigrate(key);
-    console.log(`Migrated ${key}.`);
+    console.log(`Migrated ${key} on ${psql.settings.database}.`);
   });
