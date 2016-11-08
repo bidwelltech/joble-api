@@ -22,15 +22,15 @@
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "api-db",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "api-db",
     "public": false
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "api-db",
     "public": false
   },
   "job": {
