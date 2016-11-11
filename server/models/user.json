@@ -50,6 +50,12 @@
       "principalId": "$unauthenticated",
       "permission": "ALLOW",
       "property": "login"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW"
     }
   ],
   "methods": {}
