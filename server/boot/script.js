@@ -63,23 +63,34 @@ module.exports = (app) => {
     ))
     .then(() => (
       new Promise((resolve, reject) => {
-        Role.create({ name: 'admin' }, (err, role) => {
-          if (err) return reject(err);
-          console.log('Created role admin');
+        Role.find({ where: { name: 'admin' } }, (findRoleError, roles) => {
+          if (findRoleError) {
+            console.log(findRoleError);
+            return reject('cats');
+          }
 
-          return role.principals.create({
-            principalType: RoleMapping.USER,
-            principalId: testAdmin.id,
-          }, (principalCreationErr) => {
-            if (principalCreationErr) return reject(principalCreationErr);
+          if (roles.length === 0) {
+            Role.create({ name: 'admin' }, (err, role) => {
+              if (err) return reject(err);
+              console.log('Created role admin');
 
-            console.log(`Set ${testAdmin.username} as an admin`);
-            return resolve();
-          });
+              return role.principals.create({
+                principalType: RoleMapping.USER,
+                principalId: testAdmin.id,
+              }, (principalCreationErr) => {
+                if (principalCreationErr) return reject(principalCreationErr);
+
+                console.log(`Set ${testAdmin.username} as an admin`);
+                return resolve();
+              });
+            });
+          }
+
+          return resolve();
         });
       })
     ))
-    .catch(err => console.error('lul', err));
+    .catch(err => console.error(err));
   }
 };
 

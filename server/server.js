@@ -4,7 +4,7 @@ const morgan = require('morgan');
 
 const app = module.exports = loopback();
 
-if (process.NODE_ENV !== 'production') {
+if (process.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
