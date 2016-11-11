@@ -23,7 +23,7 @@ const itShould = (expectation, config) => {
     if (config.token) {
       config.request(config.path)
         .set('Authorization', config.token)
-        .end((err, response), () => {
+        .end((err, response) => {
           if (err) return done(err);
 
           expectation.test(response);
@@ -31,8 +31,7 @@ const itShould = (expectation, config) => {
         });
     } else {
       config.request(config.path)
-        .set('Authorization', config.token)
-        .end((err, response), () => {
+        .end((err, response) => {
           if (err) return done(err);
 
           expectation.test(response);
@@ -191,7 +190,6 @@ api
   .send(userCredentials.admin)
   .expect(200)
   .then((response) => {
-    console.log('1');
     userData.admin.token = response.body.id;
     userData.admin.id = response.body.userId;
 
@@ -201,7 +199,6 @@ api
       .expect(200);
   })
   .then((response) => {
-    console.log('2');
     userData.authenticated.token = response.body.id;
     userData.authenticated.id = response.body.userId;
 
