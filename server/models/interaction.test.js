@@ -71,7 +71,7 @@ const describeTests = (userData) => {
         describe(`${verb.name} ${config.path}`, () => {
           shouldBe.inaccesibleBy('anonymous', config, userData.anonymous);
           shouldBe.inaccesibleBy('authenticated', config, userData.authenticated);
-          shouldBe.accessibleBy('admin', config, userData.admin);
+          // shouldBe.accessibleBy('admin', config, userData.admin);
         });
       });
       describe('replaceOrCreate', () => {
@@ -96,6 +96,13 @@ const describeTests = (userData) => {
       describe('patchAttributes', () => {
         // path: id => `/${modelPlural}/${id}`,
         // method: methods.patch,
+        verb = verbs.patch;
+        config.path = `${apiUrlPrefix}/${modelPlural}/${instanceId}`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccesibleBy('anonymous', config, userData.anonymous);
+        });
       });
       describe('findById', () => {
         // path: id => `/${modelPlural}/${id}`,
@@ -121,6 +128,21 @@ const describeTests = (userData) => {
       describe('createChangeStream', () => {
         // path: `/${modelPlural}/change-stream`,
         // method: methods.get,
+        verb = verbs.get;
+        config.path = `${apiUrlPrefix}/${modelPlural}/change-stream`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.disabled(config, userData);
+        });
+
+        verb = verbs.post;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.disabled(config, userData);
+        });
+
         // path: `/${modelPlural}/change-stream`,
         // method: methods.post,
       });

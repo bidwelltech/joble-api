@@ -6,7 +6,9 @@ const itShould = (expectation, config) => {
       config.request(config.path)
         .set('Authorization', config.token)
         .end((err, response) => {
-          if (err) return done(err);
+          if (err) {
+            return done(err);
+          }
 
           expectation.test(response);
           return done();
@@ -14,7 +16,9 @@ const itShould = (expectation, config) => {
     } else {
       config.request(config.path)
         .end((err, response) => {
-          if (err) return done(err);
+          if (err) {
+            return done(err);
+          }
 
           expectation.test(response);
           return done();
@@ -31,11 +35,19 @@ const matchContentType = contentType => ({
   },
 });
 
-const haveStatusCode = statusCode => ({
-  description: `should respond with ${statusCode}`,
+const haveStatusCode = statusCodes => ({
+  description: (Array.isArray(statusCodes)) ?
+    `should respond with on of ${statusCodes}` : `should respond with ${statusCodes}`,
   test: (response) => {
-    expect(response.status)
-      .to.equal(statusCode);
+    if (Array.isArray(statusCodes)) {
+      // Test against multiple status codes
+      expect(statusCodes)
+        .to.contain(response.status);
+    } else {
+      // Test against a single status codes
+      expect(statusCodes)
+        .to.equal(response.status);
+    }
   },
 });
 
@@ -62,19 +74,19 @@ const disabled = (origConfig, userData) => {
   describe('anonymous', () => {
     config.token = null;
 
-    itShould(haveStatusCode(404), config);
+    itShould(haveStatusCode([404, 500]), config);
     itShould(matchContentType(/.*json.*/), config);
   });
   describe('authenticated', () => {
     config.token = userData.authenticated.token;
 
-    itShould(haveStatusCode(404), config);
+    itShould(haveStatusCode([404, 500]), config);
     itShould(matchContentType(/.*json.*/), config);
   });
   describe('admin', () => {
     config.token = userData.admin.token;
 
-    itShould(haveStatusCode(404), config);
+    itShould(haveStatusCode([404, 500]), config);
     itShould(matchContentType(/.*json.*/), config);
   });
 };
