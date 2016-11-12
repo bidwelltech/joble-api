@@ -1,116 +1,96 @@
 /* eslint-disable no-unused-expressions */
 const expect = require('chai').expect;
 const request = require('supertest-as-promised');
-
+const generateHTTPVerbs = require('./testHelpers').generateHTTPVerbs;
+const shouldBe = require('./testHelpers').shouldBe;
+// const itShould = require('./testHelpers').itShould;
+// const matchContentType = require('./testHelpers').matchContentType;
+// const haveStatusCode = require('./testHelpers').haveStatusCode;
 const app = require('../server');
 
 const api = request(app);
 const apiUrlPrefix = '/api';
+const verbs = generateHTTPVerbs(api);
+
+const validModelData = {
+  description: 'This is an example',
+  startDate: Date.now(),
+  type: 'communication',
+  notes: 'These are notes',
+};
 
 const modelPlural = 'interactions';
 // const modelSingular = 'interaction';
-
-const methods = {
-  get: { name: 'GET', fn: api.get },
-  put: { name: 'PUT', fn: api.put },
-  patch: { name: 'PATCH', fn: api.patch },
-  delete: { name: 'DELETE', fn: api.delete },
-  post: { name: 'POST', fn: api.post },
-};
-
-const itShould = (expectation, config) => {
-  it(expectation.description, (done) => {
-    if (config.token) {
-      config.request(config.path)
-        .set('Authorization', config.token)
-        .end((err, response) => {
-          if (err) return done(err);
-
-          expectation.test(response);
-          return done();
-        });
-    } else {
-      config.request(config.path)
-        .end((err, response) => {
-          if (err) return done(err);
-
-          expectation.test(response);
-          return done();
-        });
-    }
-  });
-};
-
-const matchContentType = contentType => ({
-  description: `should respond with Content-Type ${contentType}`,
-  test: (response) => {
-    expect(response.headers['content-type'])
-      .to.match(contentType);
-  },
-});
-
-const haveStatusCode = statusCode => ({
-  description: `should respond with ${statusCode}`,
-  test: (response) => {
-    expect(response.status)
-      .to.equal(statusCode);
-  },
-});
 
 
 const describeTests = (userData) => {
   const config = { request: '', path: '', token: '' };
 
-  let path;
-  let method;
+  let verb;
+  let instanceId;
 
   describe('Interactions', () => {
     beforeEach((done) => {
-      done();
+      const { id, token } = userData.authenticated;
+
+      api
+        .post(`${apiUrlPrefix}/users/${id}/${modelPlural}`)
+        .send(validModelData)
+        .set('Authorization', token)
+        .expect(200)
+        .then((response) => {
+          instanceId = response.body.id;
+          done();
+        });
     });
 
     afterEach((done) => {
-      done();
+      const { id, token } = userData.authenticated;
+
+      api
+        .delete(`${apiUrlPrefix}/users/${id}/${modelPlural}/${instanceId}`)
+        .set('Authorization', token)
+        .expect(204, done);
     });
 
     describe('endpoints', () => {
       describe('patchOrCreate', () => {
-        method = methods.patch;
+        verb = verbs.patch;
         config.path = `${apiUrlPrefix}/${modelPlural}`;
-        config.request = api.patch;
+        config.request = verb.fn;
 
-        describe(`${method.name} ${config.path}`, () => {
-          describe('anonymous', () => {
-            config.token = null;
-
-            itShould(haveStatusCode(404), config);
-            itShould(matchContentType(/.*json.*/), config);
-          });
-          describe('authenticated', () => {
-            config.token = userData.authenticated.token;
-
-            itShould(haveStatusCode(404), config);
-            itShould(matchContentType(/.*json.*/), config);
-          });
-          describe('admin', () => {
-            config.token = userData.admin.token;
-
-            itShould(haveStatusCode(404), config);
-            itShould(matchContentType(/.*json.*/), config);
-          });
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.disabled(config, userData);
         });
       });
       describe('find', () => {
-        // path: `/${modelPlural}`,
-        // method: methods.get,
+        verb = verbs.get;
+        config.path = `${apiUrlPrefix}/${modelPlural}`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccesibleBy('anonymous', config, userData.anonymous);
+          shouldBe.inaccesibleBy('authenticated', config, userData.authenticated);
+          shouldBe.accessibleBy('admin', config, userData.admin);
+        });
       });
       describe('replaceOrCreate', () => {
-        // path: `/${modelPlural}`,
-        // method: methods.put,
+        verb = verbs.put;
+        config.path = `${apiUrlPrefix}/${modelPlural}`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.disabled(config, userData);
+        });
       });
       describe('create', () => {
-        // path: `/${modelPlural}`,
-        // method: methods.post,
+        verb = verbs.post;
+        config.path = `${apiUrlPrefix}/${modelPlural}`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.disabled(config, userData);
+        });
       });
 
       describe('patchAttributes', () => {
@@ -181,8 +161,9 @@ const userCredentials = {
 };
 
 const userData = {
-  authenticated: {},
   admin: {},
+  anonymous: { id: null, token: null },
+  authenticated: {},
 };
 
 api
