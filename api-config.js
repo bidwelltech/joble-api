@@ -2,12 +2,9 @@ module.exports = {
 
   interaction: {
     enabledMethods: [
-      // Model creating should happen through the /user/:id/:model endpoint
-      // 'create',
-      // Model patching should happen through the /user/:id/:model endpoint
-      // 'patchOrCreate',
-      // Model put-ing should happen through the /user/:id/:model endpoint
-      // 'replaceOrCreate',
+      'create',
+      'patchOrCreate',
+      'replaceOrCreate',
       'upsertWithWhere',
       'exists',
       'findById',
@@ -18,8 +15,7 @@ module.exports = {
       'deleteById',
       'count',
       'patchAttributes',
-      // Removed as it has no utility at this point in the apps development
-      // 'createChangeStream',
+      'createChangeStream',
 
       'prototype.patchAttributes',
 
@@ -53,12 +49,9 @@ module.exports = {
 
   job: {
     enabledMethods: [
-      // Model creating should happen through the /user/:id/:model endpoint
-      // 'create',
-      // Model patching should happen through the /user/:id/:model endpoint
-      // 'patchOrCreate',
-      // Model put-ing should happen through the /user/:id/:model endpoint
-      // 'replaceOrCreate',
+      'create',
+      'patchOrCreate',
+      'replaceOrCreate',
       'upsertWithWhere',
       'exists',
       'findById',
@@ -69,8 +62,7 @@ module.exports = {
       'deleteById',
       'count',
       'patchAttributes',
-      // Removed as it has no utility at this point in the apps development
-      // 'createChangeStream',
+      'createChangeStream',
       'prototype.patchAttributes',
 
       'prototype.__findById__search',
@@ -129,12 +121,9 @@ module.exports = {
 
   offer: {
     enabledMethods: [
-      // Model creating should happen through the /user/:id/:model endpoint
-      // 'create',
-      // Model patching should happen through the /user/:id/:model endpoint
-      // 'patchOrCreate',
-      // Model put-ing should happen through the /user/:id/:model endpoint
-      // 'replaceOrCreate',
+      'create',
+      'patchOrCreate',
+      'replaceOrCreate',
       'upsertWithWhere',
       'exists',
       'findById',
@@ -145,8 +134,7 @@ module.exports = {
       'deleteById',
       'count',
       'patchAttributes',
-      // Removed as it has no utility at this point in the apps development
-      // 'createChangeStream',
+      'createChangeStream',
 
       'prototype.patchAttributes',
 
@@ -181,12 +169,9 @@ module.exports = {
 
   search: {
     enabledMethods: [
-      // Model creating should happen through the /user/:id/:model endpoint
-      // 'create',
-      // Model patching should happen through the /user/:id/:model endpoint
-      // 'patchOrCreate',
-      // Model put-ing should happen through the /user/:id/:model endpoint
-      // 'replaceOrCreate',
+      'create',
+      'patchOrCreate',
+      'replaceOrCreate',
       'upsertWithWhere',
       'exists',
       'findById',
@@ -197,8 +182,7 @@ module.exports = {
       'deleteById',
       'count',
       'patchAttributes',
-      // Removed as it has no utility at this point in the apps development
-      // 'createChangeStream',
+      'createChangeStream',
 
       'prototype.patchAttributes',
 
@@ -246,8 +230,7 @@ module.exports = {
       'deleteById',
       'count',
       'patchAttributes',
-      // Removed as it has no utility at this point in the apps development
-      // 'createChangeStream',
+      'createChangeStream',
 
       'login',
       'logout',
@@ -322,6 +305,4 @@ module.exports = {
       'prototype.__delete__searches',
     ],
   },
-
-
 };
