@@ -37,7 +37,7 @@ const matchContentType = contentType => ({
 
 const haveStatusCode = statusCodes => ({
   description: (Array.isArray(statusCodes)) ?
-    `should respond with on of ${statusCodes}` : `should respond with ${statusCodes}`,
+    `should respond with one of [${statusCodes.join(', ')}]` : `should respond with ${statusCodes}`,
   test: (response) => {
     if (Array.isArray(statusCodes)) {
       // Test against multiple status codes
