@@ -4,9 +4,8 @@
 
 ## Users
 
-| Users |  |  | Roles |  |  |
-|---|---|---|---|---|---|
 | Endpoint | Method | Path | Anonymous | Authenticated | Owner |
+|---|---|---|---|---|---|
 | create | POST | / | yes | yes | yes |
 | patchOrCreate | PATCH | / | disabled | disabled | disabled |
 | replaceOrCreate | PUT | / | disabled | disabled | disabled |
@@ -67,9 +66,8 @@
 
 ## Interactions
 
-| Interactions |  |  | Roles |  |  |
-|---|---|---|---|---|---|
 | Endpoint | Method | Path | Anonymous | Authenticated | Owner |
+|---|---|---|---|---|---|
 | create | POST | / | no | yes | yes |
 | patchOrCreate | PATCH | / | disabled | disabled | disabled |
 | replaceOrCreate | PUT | / | disabled | disabled | disabled |
@@ -94,9 +92,8 @@
 
 ## Jobs
 
-| Jobs |  |  | Roles |  |  |
-|---|---|---|---|---|---|
 | Endpoint | Method | Path | Anonymous | Authenticated | Owner |
+|---|---|---|---|---|---|
 | create | POST | / | no | yes | yes |
 | patchOrCreate | PATCH | / | disabled | disabled | disabled |
 | replaceOrCreate | PUT | / | disabled | disabled | disabled |
@@ -137,9 +134,8 @@
 
 ## Searches
 
-| Searches |  |  | Roles |  |  |
-|---|---|---|---|---|---|
 | Endpoint | Method | Path | Anonymous | Authenticated | Owner |
+|---|---|---|---|---|---|
 | create | POST | / | no | yes | yes |
 | patchOrCreate | PATCH | / | disabled | disabled | disabled |
 | replaceOrCreate | PUT | / | disabled | disabled | disabled |
@@ -170,9 +166,8 @@
 
 ## Offers
 
-| Offers |  |  | Roles |  |  |
-|---|---|---|---|---|---|
 | Endpoint | Method | Path | Anonymous | Authenticated | Owner |
+|---|---|---|---|---|---|
 | create | POST | / | no | yes | yes |
 | patchOrCreate | PATCH | / | disabled | disabled | disabled |
 | replaceOrCreate | PUT | / | disabled | disabled | disabled |
