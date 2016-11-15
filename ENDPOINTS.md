@@ -1,3 +1,9 @@
+# Endpoints
+
+> "Easy-to-read" endpoint documentation
+
+## Users
+
 | Users |  |  | Roles |  |  |
 |---|---|---|---|---|---|
 | Endpoint | Method | Path | Anonymous | Authenticated | Owner |
@@ -59,6 +65,7 @@
 | prototype.\_\_updateById\_\_searches | PUT | /:id/searches/:fk | disabled | disabled | disabled |
 | prototype.\_\_count\_\_searches | GET | /:id/searches/count | no | no | yes |
 
+## Interactions
 
 | Interactions |  |  | Roles |  |  |
 |---|---|---|---|---|---|
@@ -85,6 +92,7 @@
 |  |  |  |  |  |  |
 | prototype.\_\_get\_\_user | GET | /:id/user | no | no | yes |
 
+## Jobs
 
 | Jobs |  |  | Roles |  |  |
 |---|---|---|---|---|---|
@@ -127,6 +135,7 @@
 |  |  |  |  |  |  |
 | prototype.\_\_get\_\_user | GET | /:id/user | no | no | yes |
 
+## Searches
 
 | Searches |  |  | Roles |  |  |
 |---|---|---|---|---|---|
@@ -159,6 +168,7 @@
 |  |  |  |  |  |  |
 | prototype.\_\_get\_\_user | GET | /:id/user | no | no | yes |
 
+## Offers
 
 | Offers |  |  | Roles |  |  |
 |---|---|---|---|---|---|
