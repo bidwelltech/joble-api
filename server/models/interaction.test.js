@@ -12,12 +12,6 @@ const api = request(app);
 const apiUrlPrefix = '/api';
 const verbs = generateHTTPVerbs(api);
 
-const validModelData = {
-  description: 'This is an example',
-  startDate: Date.now(),
-  type: 'communication',
-  notes: 'These are notes',
-};
 
 const modelPlural = 'interactions';
 // const modelSingular = 'interaction';
@@ -31,10 +25,18 @@ const describeTests = (userData) => {
 
   describe('Interactions', () => {
     beforeEach((done) => {
-      const { id, token } = userData.authenticated;
+      const { userId, token } = userData.owner;
+
+      const validModelData = {
+        userId,
+        description: 'This is an example',
+        startDate: Date.now(),
+        type: 'communication',
+        notes: 'These are notes',
+      };
 
       api
-        .post(`${apiUrlPrefix}/users/${id}/${modelPlural}`)
+        .post(`${apiUrlPrefix}/${modelPlural}`)
         .send(validModelData)
         .set('Authorization', token)
         .expect(200)
@@ -45,33 +47,38 @@ const describeTests = (userData) => {
     });
 
     afterEach((done) => {
-      const { id, token } = userData.authenticated;
+      const token = userData.owner.token;
+
+      // TODO: Fix url?
+      console.log(`${apiUrlPrefix}/${modelPlural}/${instanceId}`);
 
       api
-        .delete(`${apiUrlPrefix}/users/${id}/${modelPlural}/${instanceId}`)
+        .delete(`${apiUrlPrefix}/${modelPlural}/${instanceId}`)
         .set('Authorization', token)
         .expect(204, done);
     });
 
     describe('endpoints', () => {
+      describe('create', () => {
+        verb = verbs.post;
+        config.path = `${apiUrlPrefix}/${modelPlural}`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.accessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
+        });
+      });
       describe('patchOrCreate', () => {
         verb = verbs.patch;
         config.path = `${apiUrlPrefix}/${modelPlural}`;
         config.request = verb.fn;
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(config, userData);
-        });
-      });
-      describe('find', () => {
-        verb = verbs.get;
-        config.path = `${apiUrlPrefix}/${modelPlural}`;
-        config.request = verb.fn;
-
-        describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.inaccesibleBy('anonymous', config, userData.anonymous);
-          shouldBe.inaccesibleBy('authenticated', config, userData.authenticated);
-          // shouldBe.accessibleBy('admin', config, userData.admin);
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
         });
       });
       describe('replaceOrCreate', () => {
@@ -80,91 +87,178 @@ const describeTests = (userData) => {
         config.request = verb.fn;
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(config, userData);
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
         });
       });
-      describe('create', () => {
-        verb = verbs.post;
+      describe('find', () => {
+        verb = verbs.get;
         config.path = `${apiUrlPrefix}/${modelPlural}`;
         config.request = verb.fn;
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(config, userData);
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
         });
       });
 
       describe('patchAttributes', () => {
-        // path: id => `/${modelPlural}/${id}`,
-        // method: methods.patch,
         verb = verbs.patch;
         config.path = `${apiUrlPrefix}/${modelPlural}/${instanceId}`;
         config.request = verb.fn;
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.inaccesibleBy('anonymous', config, userData.anonymous);
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
         });
       });
       describe('findById', () => {
-        // path: id => `/${modelPlural}/${id}`,
-        // method: methods.get,
+        verb = verbs.get;
+        config.path = `${apiUrlPrefix}/${modelPlural}/${instanceId}`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
+        });
       });
       describe('replaceById', () => {
-        // path: id => `/${modelPlural}/${id}`,
-        // method: methods.put,
+        verb = verbs.put;
+        config.path = `${apiUrlPrefix}/${modelPlural}/${instanceId}`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
+        });
       });
       describe('deleteById', () => {
-        // path: id => `/${modelPlural}/${id}`,
-        // method: methods.delete,
+        verb = verbs.delete;
+        config.path = `${apiUrlPrefix}/${modelPlural}/${instanceId}`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
+        });
       });
 
       describe('exists', () => {
-        // path: id => `/${modelPlural}/${id}/exists`,
-        // method: methods.get,
+        verb = verbs.get;
+        config.path = `${apiUrlPrefix}/${modelPlural}/exists`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
+        });
       });
       describe('replaceById', () => {
-        // path: id => `/${modelPlural}/${id}/replace`,
-        // method: methods.post,
+        verb = verbs.post;
+        config.path = `${apiUrlPrefix}/${modelPlural}/replace`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
+        });
       });
       describe('createChangeStream', () => {
-        // path: `/${modelPlural}/change-stream`,
-        // method: methods.get,
         verb = verbs.get;
         config.path = `${apiUrlPrefix}/${modelPlural}/change-stream`;
         config.request = verb.fn;
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(config, userData);
+          shouldBe.disabled(userData, config);
         });
 
         verb = verbs.post;
         config.request = verb.fn;
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(config, userData);
+          shouldBe.disabled(userData, config);
         });
-
-        // path: `/${modelPlural}/change-stream`,
-        // method: methods.post,
       });
       describe('count', () => {
-        // path: `/${modelPlural}/count`,
-        // method: methods.get,
+        verb = verbs.get;
+        config.path = `${apiUrlPrefix}/${modelPlural}/count`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.disabled(userData, config);
+        });
       });
       describe('findOne', () => {
-        // path: `/${modelPlural}/findOne`,
-        // method: methods.get,
+        verb = verbs.get;
+        config.path = `${apiUrlPrefix}/${modelPlural}/findOne`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
+        });
       });
       describe('replaceOrCreate', () => {
-        // path: `/${modelPlural}/replaceOrCreate`,
-        // method: methods.put,
+        verb = verbs.put;
+        config.path = `${apiUrlPrefix}/${modelPlural}/replaceOrCreate`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.disabled(userData, config);
+        });
       });
       describe('updateAll', () => {
-        // path: `/${modelPlural}/update`,
-        // method: methods.post,
+        verb = verbs.post;
+        config.path = `${apiUrlPrefix}/${modelPlural}/update`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.disabled(userData, config);
+        });
       });
       describe('upsertWithWhere', () => {
-        // path: `/${modelPlural}/upsertWithWhere`,
-        // method: methods.post,
+        verb = verbs.post;
+        config.path = `${apiUrlPrefix}/${modelPlural}/upsertWithWhere`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.disabled(userData, config);
+        });
+      });
+
+      // Jobs
+      describe('prototype.__get__job', () => {
+        verb = verbs.get;
+        config.path = `${apiUrlPrefix}/${modelPlural}/${instanceId}/job`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
+        });
+      });
+
+      // User
+      describe('prototype.__get__user', () => {
+        verb = verbs.get;
+        config.path = `${apiUrlPrefix}/${modelPlural}/${instanceId}/user`;
+        config.request = verb.fn;
+
+        describe(`${verb.name} ${config.path}`, () => {
+          shouldBe.inaccessibleBy(userData.anonymous, config);
+          shouldBe.inaccessibleBy(userData.authenticated, config);
+          shouldBe.accessibleBy(userData.owner, config);
+        });
       });
     });
   });
@@ -173,28 +267,28 @@ const describeTests = (userData) => {
 
 const userCredentials = {
   authenticated: {
-    username: 'testuser',
-    password: 'testuser',
+    username: 'testuser1',
+    password: 'testuser1',
   },
-  admin: {
-    username: 'testadmin',
-    password: 'testadmin',
+  owner: {
+    username: 'testuser2',
+    password: 'testuser2',
   },
 };
 
 const userData = {
-  admin: {},
-  anonymous: { id: null, token: null },
-  authenticated: {},
+  anonymous: { name: 'anonymous', token: null, id: null },
+  authenticated: { name: 'authenticated' },
+  owner: { name: 'owner' },
 };
 
 api
   .post(`${apiUrlPrefix}/users/login`)
-  .send(userCredentials.admin)
+  .send(userCredentials.owner)
   .expect(200)
   .then((response) => {
-    userData.admin.token = response.body.id;
-    userData.admin.id = response.body.userId;
+    userData.owner.token = response.body.id;
+    userData.owner.id = response.body.userId;
 
     return api
       .post(`${apiUrlPrefix}/users/login`)

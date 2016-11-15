@@ -27,14 +27,23 @@ const itShould = (expectation, config) => {
   });
 };
 
-const matchContentType = contentType => ({
-  description: `should respond with Content-Type ${contentType}`,
+const matchContentType = contentTypeRegex => ({
+  description: `should respond with Content-Type ${contentTypeRegex}`,
   test: (response) => {
     expect(response.headers['content-type'])
-      .to.match(contentType);
+      .to.match(contentTypeRegex);
   },
 });
 
+const matchStatusCode = statusCodeRegex => ({
+  description: `should respond with ${statusCodeRegex}`,
+  test: (response) => {
+    expect(response.status)
+      .to.match(statusCodeRegex);
+  },
+});
+
+  /*
 const haveStatusCode = statusCodes => ({
   description: (Array.isArray(statusCodes)) ?
     `should respond with one of [${statusCodes.join(', ')}]` : `should respond with ${statusCodes}`,
@@ -58,6 +67,7 @@ const notHaveStatusCodes = statusCodes => ({
       .to.not.contain(response.status);
   },
 });
+*/
 
 const generateHTTPVerbs = server => ({
   get: { name: 'GET', fn: server.get },
@@ -68,47 +78,37 @@ const generateHTTPVerbs = server => ({
 });
 
 // shouldBe
-const disabled = (origConfig, userData) => {
+const disabled = (userData, origConfig) => {
   const config = Object.assign({}, origConfig);
 
-  describe('anonymous', () => {
-    config.token = null;
+  Object.keys(userData).forEach((key) => {
+    describe(userData[key].name, () => {
+      config.token = userData[key].token;
 
-    itShould(haveStatusCode([404, 500]), config);
-    itShould(matchContentType(/.*json.*/), config);
+      itShould(matchStatusCode(/(404|500)/), config);
+      itShould(matchContentType(/.*json.*/), config);
+    });
   });
-  describe('authenticated', () => {
-    config.token = userData.authenticated.token;
+};
 
-    itShould(haveStatusCode([404, 500]), config);
-    itShould(matchContentType(/.*json.*/), config);
-  });
-  describe('admin', () => {
-    config.token = userData.admin.token;
+// shouldBe
+const accessibleBy = (userData, origConfig) => {
+  const config = Object.assign({}, origConfig);
 
-    itShould(haveStatusCode([404, 500]), config);
+  describe(userData.name, () => {
+    config.token = userData.token;
+    itShould(matchStatusCode(/2\d{2}/), config);
     itShould(matchContentType(/.*json.*/), config);
   });
 };
 
 // shouldBe
-const accessibleBy = (name, origConfig, userData) => {
+const inaccessibleBy = (userData, origConfig) => {
   const config = Object.assign({}, origConfig);
 
-  describe(name, () => {
+  describe(userData.name, () => {
     config.token = userData.token;
-    itShould(notHaveStatusCodes([401, 404]), config);
-    itShould(matchContentType(/.*json.*/), config);
-  });
-};
-
-// shouldBe
-const inaccesibleBy = (name, origConfig, userData) => {
-  const config = Object.assign({}, origConfig);
-
-  describe(name, () => {
-    config.token = userData.token;
-    itShould(haveStatusCode(401), config);
+    itShould(matchStatusCode(/401/), config);
     itShould(matchContentType(/.*json.*/), config);
   });
 };
@@ -116,13 +116,12 @@ const inaccesibleBy = (name, origConfig, userData) => {
 
 module.exports = {
   generateHTTPVerbs,
-  notHaveStatusCodes,
-  haveStatusCode,
   itShould,
   matchContentType,
+  matchStatusCode,
   shouldBe: {
     accessibleBy,
     disabled,
-    inaccesibleBy,
+    inaccessibleBy,
   },
 };
