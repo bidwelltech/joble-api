@@ -4,9 +4,6 @@ module.exports = (app) => {
   if (process.env.NODE_ENV === 'test') {
     const User = app.models.user;
 
-    console.log('creating users');
-
-
     // Use bluebird Promises to create a promise chain as
     // Loopback doesn't support promises yet, and promisify(All) doesn't work
     // https://github.com/strongloop/loopback/issues/418#issue-38984704
