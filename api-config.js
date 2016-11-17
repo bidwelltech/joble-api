@@ -3,13 +3,13 @@ module.exports = {
   interaction: {
     enabledMethods: [
       'create',
-      'patchOrCreate',
-      'replaceOrCreate',
+      // 'patchOrCreate',
+      // 'replaceOrCreate',
       'upsertWithWhere',
       'exists',
       'findById',
       'replaceById',
-      'find',
+      // 'find',
       'findOne',
       'updateAll',
       'deleteById',

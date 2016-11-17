@@ -1,33 +1,26 @@
 const expect = require('chai').expect;
 
-const itShould = (expectation, config) => {
-  it(expectation.description, (done) => {
-    if (config.token) {
-      config.request(config.path)
-        .set('Authorization', config.token)
-        .end((err, response) => {
-          if (err) {
-            return done(err);
-          }
-
-          expectation.test(response);
-          return done();
-        });
-    } else {
-      config.request(config.path)
-        .end((err, response) => {
-          if (err) {
-            return done(err);
-          }
-
-          expectation.test(response);
-          return done();
-        });
+const itShould = (expectation, config, dataToSend, done) => {
+  const request = config.request(config.path);
+  if (config.token) {
+    request.set('Authorization', config.token);
+  }
+  // console.log('config', config);
+  if (dataToSend !== null) {
+    // console.log('dataToSend', dataToSend);
+    request.send(dataToSend);
+  }
+  request.end((err, response) => {
+    if (err) {
+      return done(err);
     }
+
+    expectation.test(response);
+    return done();
   });
 };
 
-const matchContentType = contentTypeRegex => ({
+const _matchContentType = contentTypeRegex => ({
   description: `should respond with Content-Type ${contentTypeRegex}`,
   test: (response) => {
     expect(response.headers['content-type'])
@@ -35,39 +28,13 @@ const matchContentType = contentTypeRegex => ({
   },
 });
 
-const matchStatusCode = statusCodeRegex => ({
+const _matchStatusCode = statusCodeRegex => ({
   description: `should respond with ${statusCodeRegex}`,
   test: (response) => {
     expect(response.status)
       .to.match(statusCodeRegex);
   },
 });
-
-  /*
-const haveStatusCode = statusCodes => ({
-  description: (Array.isArray(statusCodes)) ?
-    `should respond with one of [${statusCodes.join(', ')}]` : `should respond with ${statusCodes}`,
-  test: (response) => {
-    if (Array.isArray(statusCodes)) {
-      // Test against multiple status codes
-      expect(statusCodes)
-        .to.contain(response.status);
-    } else {
-      // Test against a single status codes
-      expect(statusCodes)
-        .to.equal(response.status);
-    }
-  },
-});
-
-const notHaveStatusCodes = statusCodes => ({
-  description: `should not respond with ${statusCodes.join(' or ')}`,
-  test: (response) => {
-    expect(statusCodes)
-      .to.not.contain(response.status);
-  },
-});
-*/
 
 const generateHTTPVerbs = server => ({
   get: { name: 'GET', fn: server.get },
@@ -78,50 +45,68 @@ const generateHTTPVerbs = server => ({
 });
 
 // shouldBe
-const disabled = (userData, origConfig) => {
+const beDisabled = 'should be disabled';
+const beDisabledFor = (userData, origConfig, done) => {
   const config = Object.assign({}, origConfig);
 
-  Object.keys(userData).forEach((key) => {
-    describe(userData[key].name, () => {
-      config.token = userData[key].token;
+  config.token = userData.token;
 
-      itShould(matchStatusCode(/(404|500)/), config);
-      itShould(matchContentType(/.*json.*/), config);
-    });
-  });
+  itShould(_matchStatusCode(/(404|500)/), config, null, done);
 };
 
-// shouldBe
-const accessibleBy = (userData, origConfig) => {
+// should
+const beAccessible = 'should be accessible';
+const beAccessibleBy = (userData, origConfig, dataToSend, done) => {
   const config = Object.assign({}, origConfig);
 
-  describe(userData.name, () => {
-    config.token = userData.token;
-    itShould(matchStatusCode(/2\d{2}/), config);
-    itShould(matchContentType(/.*json.*/), config);
-  });
+  config.token = userData.token;
+  itShould(_matchStatusCode(/2\d{2}/), config, dataToSend, done);
 };
 
-// shouldBe
-const inaccessibleBy = (userData, origConfig) => {
+// should
+const beInaccessible = 'should be inaccessible';
+const beInaccessibleBy = (userData, origConfig, done) => {
   const config = Object.assign({}, origConfig);
 
-  describe(userData.name, () => {
-    config.token = userData.token;
-    itShould(matchStatusCode(/401/), config);
-    itShould(matchContentType(/.*json.*/), config);
-  });
+  config.token = userData.token;
+  itShould(_matchStatusCode(/401/), config, null, done);
 };
 
+// should
+const haveJSONContentType = 'should have Content-Type of application/json';
+const matchContentType = (contentTypeRegex, userData, origConfig, done) => {
+  const config = Object.assign({}, origConfig);
+
+  config.token = userData.token;
+  itShould(_matchContentType(contentTypeRegex), config, null, done);
+};
+
+// should
+const matchStatusCode = (statusCodeRegex, userData, origConfig, done) => {
+  const config = Object.assign({}, origConfig);
+
+  config.token = userData.token;
+  itShould(_matchStatusCode(statusCodeRegex), config, null, done);
+};
 
 module.exports = {
   generateHTTPVerbs,
   itShould,
   matchContentType,
   matchStatusCode,
-  shouldBe: {
-    accessibleBy,
-    disabled,
-    inaccessibleBy,
+  should: {
+    beAccessible,
+    beAccessibleBy,
+
+    beDisabled,
+    beDisabledFor,
+
+    beInaccessible,
+    beInaccessibleBy,
+
+    matchStatusCode,
+
+    haveJSONContentType,
+    matchContentType,
   },
 };
