@@ -5,13 +5,12 @@ const itShould = (expectation, config, dataToSend, done) => {
   if (config.token) {
     request.set('Authorization', config.token);
   }
-  // console.log('config', config);
   if (dataToSend !== null) {
-    // console.log('dataToSend', dataToSend);
     request.send(dataToSend);
   }
   request.end((err, response) => {
     if (err) {
+      console.error('error!');
       return done(err);
     }
 

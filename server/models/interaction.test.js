@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-const expect = require('chai').expect;
+// const expect = require('chai').expect;
 const request = require('supertest-as-promised');
 const generateHTTPVerbs = require('./testHelpers').generateHTTPVerbs;
 const should = require('./testHelpers').should;
@@ -213,6 +213,13 @@ const describeTests = (userData) => {
           // Anonymous
           describe(userData.anonymous.name, () => {
             it(should.beInaccessible, (done) => {
+              // TODO: Replace Object.assign() with ES6 object spread operator
+              //
+              // should.beInaccessibleBy(
+              //    userData.anonymous,
+              //    { ...config, path: config.path.replace(':id', instanceId) }
+              //    done
+              // );
               const configCopy = Object.assign(
                 {}, config, { path: config.path.replace(':id', instanceId) }
               );
@@ -222,7 +229,7 @@ const describeTests = (userData) => {
               const configCopy = Object.assign(
                 {}, config, { path: config.path.replace(':id', instanceId) }
               );
-              should.matchContentType(/.*json.*/, userData.anonymous, config, done);
+              should.matchContentType(/.*json.*/, userData.anonymous, configCopy, done);
             });
           });
 
@@ -434,123 +441,540 @@ const describeTests = (userData) => {
         });
       });
 
-      /*
-
-
-
-
       describe('exists', () => {
-        verb = verbs.get;
-        config.path = `${apiUrlPrefix}/${modelPlural}/exists`;
-        config.request = verb.fn;
+        const verb = verbs.get;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/:id/exists`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.inaccessibleBy(userData.anonymous, config);
-          shouldBe.inaccessibleBy(userData.authenticated, config);
-          shouldBe.accessibleBy(userData.owner, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            it(should.beInaccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beInaccessibleBy(userData.anonymous, configCopy, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.anonymous, configCopy, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beInaccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beInaccessibleBy(userData.authenticated, configCopy, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.authenticated, configCopy, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beAccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beAccessibleBy(userData.owner, configCopy, null, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.owner, configCopy, done);
+            });
+          });
         });
       });
       describe('replaceById', () => {
-        verb = verbs.post;
-        config.path = `${apiUrlPrefix}/${modelPlural}/replace`;
-        config.request = verb.fn;
+        const verb = verbs.post;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/:id/replace`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.inaccessibleBy(userData.anonymous, config);
-          shouldBe.inaccessibleBy(userData.authenticated, config);
-          shouldBe.accessibleBy(userData.owner, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            it(should.beInaccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beInaccessibleBy(userData.anonymous, configCopy, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.anonymous, configCopy, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beInaccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beInaccessibleBy(userData.authenticated, configCopy, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.authenticated, configCopy, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beAccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              const dataToSend = Object.assign(
+                {}, validModelData, { userId: userData.authenticated.userId }
+              );
+              should.beAccessibleBy(userData.owner, configCopy, dataToSend, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.owner, configCopy, done);
+            });
+          });
         });
       });
       describe('createChangeStream', () => {
-        verb = verbs.get;
-        config.path = `${apiUrlPrefix}/${modelPlural}/change-stream`;
-        config.request = verb.fn;
+        const verb = verbs.get;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/change-stream`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(userData, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            // This endpoint should be disabled (404/500) but instead returns
+            // 401 for anonymous users.
+            // Issue: https://github.com/strongloop/loopback/issues/2952
+            it(should.beInaccessible, (done) => {
+              should.beInaccessibleBy(userData.anonymous, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.anonymous, config, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.authenticated, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.authenticated, config, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.owner, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.owner, config, done);
+            });
+          });
         });
-
-        verb = verbs.post;
-        config.request = verb.fn;
+      });
+      describe('createChangeStream', () => {
+        const verb = verbs.post;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/change-stream`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(userData, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.anonymous, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.anonymous, config, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.authenticated, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.authenticated, config, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.owner, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.owner, config, done);
+            });
+          });
         });
       });
       describe('count', () => {
-        verb = verbs.get;
-        config.path = `${apiUrlPrefix}/${modelPlural}/count`;
-        config.request = verb.fn;
+        const verb = verbs.get;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/count`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(userData, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            // This endpoint should be disabled (404/500) but instead returns
+            // 401 for anonymous users.
+            // Issue: https://github.com/strongloop/loopback/issues/2952
+            it(should.beInaccessible, (done) => {
+              should.beInaccessibleBy(userData.anonymous, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.anonymous, config, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.authenticated, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.authenticated, config, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.owner, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.owner, config, done);
+            });
+          });
         });
       });
       describe('findOne', () => {
-        verb = verbs.get;
-        config.path = `${apiUrlPrefix}/${modelPlural}/findOne`;
-        config.request = verb.fn;
+        const verb = verbs.get;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/findOne`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.inaccessibleBy(userData.anonymous, config);
-          shouldBe.inaccessibleBy(userData.authenticated, config);
-          shouldBe.accessibleBy(userData.owner, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            // This endpoint should be disabled (404/500) but instead returns
+            // 401 for anonymous users.
+            // Issue: https://github.com/strongloop/loopback/issues/2952
+            it(should.beInaccessible, (done) => {
+              should.beInaccessibleBy(userData.anonymous, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.anonymous, config, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.authenticated, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.authenticated, config, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.owner, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.owner, config, done);
+            });
+          });
         });
       });
       describe('replaceOrCreate', () => {
-        verb = verbs.put;
-        config.path = `${apiUrlPrefix}/${modelPlural}/replaceOrCreate`;
-        config.request = verb.fn;
+        const verb = verbs.put;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/replace`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(userData, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            // This endpoint should be disabled (404/500) but instead returns
+            // 401 for anonymous users.
+            // Issue: https://github.com/strongloop/loopback/issues/2952
+            it(should.beInaccessible, (done) => {
+              should.beInaccessibleBy(userData.anonymous, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.anonymous, config, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.authenticated, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.authenticated, config, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.owner, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.owner, config, done);
+            });
+          });
         });
       });
       describe('updateAll', () => {
-        verb = verbs.post;
-        config.path = `${apiUrlPrefix}/${modelPlural}/update`;
-        config.request = verb.fn;
+        const verb = verbs.post;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/update`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(userData, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.anonymous, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.anonymous, config, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.authenticated, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.authenticated, config, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.owner, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.owner, config, done);
+            });
+          });
         });
       });
       describe('upsertWithWhere', () => {
-        verb = verbs.post;
-        config.path = `${apiUrlPrefix}/${modelPlural}/upsertWithWhere`;
-        config.request = verb.fn;
+        const verb = verbs.post;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/upsertWithWhere`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.disabled(userData, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            // This endpoint should be disabled (404/500) but instead returns
+            // 401 for anonymous users.
+            // Issue: https://github.com/strongloop/loopback/issues/2952
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.anonymous, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.anonymous, config, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.authenticated, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.authenticated, config, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beDisabled, (done) => {
+              should.beDisabledFor(userData.owner, config, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              should.matchContentType(/.*json.*/, userData.owner, config, done);
+            });
+          });
         });
       });
 
-      // Jobs
+      // Job
       describe('prototype.__get__job', () => {
-        verb = verbs.get;
-        config.path = `${apiUrlPrefix}/${modelPlural}/${instanceId}/job`;
-        config.request = verb.fn;
+        const verb = verbs.get;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/:id/job`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.inaccessibleBy(userData.anonymous, config);
-          shouldBe.inaccessibleBy(userData.authenticated, config);
-          shouldBe.accessibleBy(userData.owner, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            it(should.beInaccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beInaccessibleBy(userData.anonymous, configCopy, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.anonymous, configCopy, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beInaccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beInaccessibleBy(userData.authenticated, configCopy, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.authenticated, configCopy, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beAccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beAccessibleBy(userData.owner, configCopy, validModelData, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.owner, configCopy, done);
+            });
+          });
         });
       });
 
       // User
       describe('prototype.__get__user', () => {
-        verb = verbs.get;
-        config.path = `${apiUrlPrefix}/${modelPlural}/${instanceId}/user`;
-        config.request = verb.fn;
+        const verb = verbs.get;
+        const config = {
+          request: verb.fn,
+          path: `${apiUrlPrefix}/${modelPlural}/:id/user`,
+          token: '',
+        };
 
         describe(`${verb.name} ${config.path}`, () => {
-          shouldBe.inaccessibleBy(userData.anonymous, config);
-          shouldBe.inaccessibleBy(userData.authenticated, config);
-          shouldBe.accessibleBy(userData.owner, config);
+          // Anonymous
+          describe(userData.anonymous.name, () => {
+            it(should.beInaccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beInaccessibleBy(userData.anonymous, configCopy, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.anonymous, configCopy, done);
+            });
+          });
+
+          // Authenticated
+          describe(userData.authenticated.name, () => {
+            it(should.beInaccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beInaccessibleBy(userData.authenticated, configCopy, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.authenticated, configCopy, done);
+            });
+          });
+
+          // Owner
+          describe(userData.owner.name, () => {
+            it(should.beAccessible, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.beAccessibleBy(userData.owner, configCopy, null, done);
+            });
+            it(should.haveJSONContentType, (done) => {
+              const configCopy = Object.assign(
+                {}, config, { path: config.path.replace(':id', instanceId) }
+              );
+              should.matchContentType(/.*json.*/, userData.owner, configCopy, done);
+            });
+          });
         });
       });
-      */
     });
   });
 };
