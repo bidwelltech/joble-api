@@ -1,21 +1,14 @@
 /* eslint-disable no-unused-expressions */
-// const expect = require('chai').expect;
 const request = require('supertest-as-promised');
 const generateHTTPVerbs = require('./testHelpers').generateHTTPVerbs;
 const should = require('./testHelpers').should;
-// const itShould = require('./testHelpers').itShould;
-// const matchContentType = require('./testHelpers').matchContentType;
-// const haveStatusCode = require('./testHelpers').haveStatusCode;
 const app = require('../server');
 
 const api = request(app);
 const apiUrlPrefix = '/api';
 const verbs = generateHTTPVerbs(api);
 
-
 const modelPlural = 'interactions';
-// const modelSingular = 'interaction';
-
 
 const describeTests = (userData) => {
   const validModelData = {
