@@ -7,7 +7,7 @@
     "start": "npm run start:development",
     "start:development": "NODE_ENV=development nodemon .",
     "start:production": "NODE_ENV=production nodemon .",
-    "test": "find . -path '*models/*test.js' -not -path '*node_modules*' | NODE_ENV=test xargs mocha --reporter=progress --bail --delay",
+    "test": "find . -path '*models/*test.js' -not -path '*node_modules*' | NODE_ENV=test xargs mocha --bail --delay",
     "migrate": "NODE_ENV=production node ./server/bin/automigrate.js && NODE_ENV=development node ./server/bin/automigrate.js && NODE_ENV=test node ./server/bin/automigrate.js",
     "posttest": "npm run lint && nsp check"
   },
