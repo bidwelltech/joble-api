@@ -19,21 +19,23 @@ const itShould = (expectation, config, dataToSend, done) => {
   });
 };
 
-const _matchContentType = contentTypeRegex => ({
-  description: `should respond with Content-Type ${contentTypeRegex}`,
-  test: (response) => {
-    expect(response.headers['content-type'])
-      .to.match(contentTypeRegex);
-  },
-});
+const expectations = {
+  matchContentType: contentTypeRegex => ({
+    description: `should respond with Content-Type ${contentTypeRegex}`,
+    test: (response) => {
+      expect(response.headers['content-type'])
+        .to.match(contentTypeRegex);
+    },
+  }),
+  matchStatusCode: statusCodeRegex => ({
+    description: `should respond with ${statusCodeRegex}`,
+    test: (response) => {
+      expect(response.status)
+        .to.match(statusCodeRegex);
+    },
+  }),
+};
 
-const _matchStatusCode = statusCodeRegex => ({
-  description: `should respond with ${statusCodeRegex}`,
-  test: (response) => {
-    expect(response.status)
-      .to.match(statusCodeRegex);
-  },
-});
 
 const generateHTTPVerbs = server => ({
   get: { name: 'GET', fn: server.get },
@@ -50,7 +52,7 @@ const beDisabledFor = (userData, origConfig, done) => {
 
   config.token = userData.token;
 
-  itShould(_matchStatusCode(/(404|500)/), config, null, done);
+  itShould(expectations.matchStatusCode(/(404|500)/), config, null, done);
 };
 
 // should
@@ -59,7 +61,7 @@ const beAccessibleBy = (userData, origConfig, dataToSend, done) => {
   const config = Object.assign({}, origConfig);
 
   config.token = userData.token;
-  itShould(_matchStatusCode(/2\d{2}/), config, dataToSend, done);
+  itShould(expectations.matchStatusCode(/2\d{2}/), config, dataToSend, done);
 };
 
 // should
@@ -68,7 +70,7 @@ const beInaccessibleBy = (userData, origConfig, done) => {
   const config = Object.assign({}, origConfig);
 
   config.token = userData.token;
-  itShould(_matchStatusCode(/401/), config, null, done);
+  itShould(expectations.matchStatusCode(/401/), config, null, done);
 };
 
 // should
@@ -77,7 +79,7 @@ const matchContentType = (contentTypeRegex, userData, origConfig, done) => {
   const config = Object.assign({}, origConfig);
 
   config.token = userData.token;
-  itShould(_matchContentType(contentTypeRegex), config, null, done);
+  itShould(expectations.matchContentType(contentTypeRegex), config, null, done);
 };
 
 // should
@@ -85,14 +87,16 @@ const matchStatusCode = (statusCodeRegex, userData, origConfig, done) => {
   const config = Object.assign({}, origConfig);
 
   config.token = userData.token;
-  itShould(_matchStatusCode(statusCodeRegex), config, null, done);
+  itShould(expectations.matchStatusCode(statusCodeRegex), config, null, done);
+};
+
+const contentTypePatterns = {
+  json: /.*json.*/,
 };
 
 module.exports = {
+  contentTypePatterns,
   generateHTTPVerbs,
-  itShould,
-  matchContentType,
-  matchStatusCode,
   should: {
     beAccessible,
     beAccessibleBy,
